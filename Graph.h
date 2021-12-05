@@ -5,6 +5,8 @@
 #include <utility>
 #include <iostream>
 #include <chrono>
+#include <set>
+#include <stack> 
 
 #pragma once
 using namespace std; 
@@ -26,5 +28,8 @@ public:
 	const vector<pair<int, int>>& GetNeighbors(int index); 
 	int GetIndex(string name); 
 	string GetName(int index); 
+
+	//graph algorithms
+	bool DFS(int first, int second); 
 };
 

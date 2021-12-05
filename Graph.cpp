@@ -101,3 +101,41 @@ string Graph::GetName(int index) {
 	return names[index]; 
 }
 
+bool Graph::DFS(int first, int second) {
+	//will return whether second can be reached from DFS starting at first
+	bool connected = false; 
+
+	//track visited nodes and nodes to be visited
+	set<int> visited; 
+	stack<int> actors;
+
+	//initialization
+	actors.push(first); 
+	visited.insert(first); 
+
+	//dfs
+	while (!actors.empty()) {
+		//update current actor
+		int curr = actors.top();
+		actors.pop(); 
+
+		//if target node is current node
+		if (curr == second) {
+			connected = true; 
+			break; 
+		}
+		else {
+			//add unvisited neighbors to stack
+			for (int i = 0; i < GetNeighbors(curr).size(); i++) {
+				//if neighbor unvisited, push it to stack
+				if (visited.find(GetNeighbors(curr)[i].first) == visited.end()) {
+					actors.push(GetNeighbors(curr)[i].first);
+					visited.insert(GetNeighbors(curr)[i].first);
+				}
+			}
+		}
+		//iterates until curr == second for better readability & future flexibility
+	}
+
+	return connected; 
+}
