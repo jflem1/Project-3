@@ -139,3 +139,29 @@ bool Graph::DFS(int first, int second) {
 
 	return connected; 
 }
+
+vector<int> Graph::BellmanFord(int source) {
+	bool change = true; 
+	vector<int> d(adjList.size(), INT_MAX);
+	vector<int> p(adjList.size(), source);
+
+	d[source] = 0;
+
+	while (change) {
+		change = false;
+
+		for (int i = 0; i < d.size(); i++) {
+			if (d[i] != INT_MAX) {
+				for (int j = 0; j < adjList[i].size(); j++) {
+					if (d[i] + adjList[i][j].second < d[j]) {
+						d[j] = d[i] + adjList[i][j].second;
+						p[j] = i;
+						change = true;
+					}
+				}
+			}
+		}
+	}
+
+	return d; 
+}
