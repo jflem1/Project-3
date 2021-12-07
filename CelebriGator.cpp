@@ -50,5 +50,20 @@ void CelebriGator() {
 
 int main()
 {
-	CelebriGator(); 
+	cout << "Initializing Graph!" << endl; 
+	Graph graph; 
+	cout << "Graph Complete!\n" << endl; 
+
+	vector<int> dij = graph.DijkstrasAlgorithm(10);
+	cout << "Dijkstra's Complete!" << endl; 
+
+	auto start = chrono::steady_clock::now(); 
+	vector<int> bell = graph.BellmanFord(10);
+	auto end = chrono::steady_clock::now(); 
+	cout << "Bellman Ford Elapsed Time: " << chrono::duration_cast<chrono::seconds>(end - start).count() << "s\n" << endl; 
+
+	cout << "Distances From Node 10:" << endl; 
+	for (int i = 0; i < 1000; i++) {
+		cout << i << ": " << bell[i] << " && " << dij[i] << endl;
+	}
 }

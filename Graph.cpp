@@ -18,7 +18,7 @@ int GetRelationship(unordered_map<int, vector<pair<int, int>>>& adjList, int fro
 
 Graph::Graph() {
 	//read graph.csv, calculate name/id maps, calculate groupings, calculate adjList 
-	ifstream inFile("C:/Users/TheWa/VSCode_projects/Project3/graph.csv");
+	ifstream inFile("data/graph.csv");
 
 	if (inFile.is_open()) {
 		//graph.csv labels (database attributes)
@@ -85,20 +85,20 @@ Graph::Graph() {
 			iterator++;
 		}
 	}
- 
+
 	inFile.close();
 }
 
 const vector<pair<int, int>>& Graph::GetNeighbors(int index) {
-	return this->adjList[index]; 
+	return adjList[index]; 
 }
 
 int Graph::GetIndex(string name) {
-	return this->indices[name];
+	return indices[name];
 }
 
 string Graph::GetName(int index) {
-	return this->names[index]; 
+	return names[index]; 
 }
 
 bool Graph::DFS(int first, int second) {
@@ -140,10 +140,38 @@ bool Graph::DFS(int first, int second) {
 	return connected; 
 }
 
+vector<int> Graph::BellmanFord(int source) {
+	bool change = true; 
+	vector<int> d(size, INT_MAX);
+	vector<int> p(size, source);
+
+	d[source] = 0;
+
+	while (change) {
+		change = false;
+
+		for (int i = 0; i < d.size(); i++) {
+			if (d[i] != INT_MAX) {
+				for (int j = 0; j < adjList[i].size(); j++) {
+					
+					if (d[i] + adjList[i][j].second < d[adjList[i][j].first]) {
+						d[adjList[i][j].first] = d[i] + adjList[i][j].second;
+						p[adjList[i][j].first] = i;
+						
+						change = true;
+					}
+				}
+			}
+		}
+	}
+
+	return d; 
+}
+
 bool Graph::BFS(int first, int second) {
 	//will return whether second can be reached from BFS starting at first
 	bool connected = false;
-	
+
 	//track visited nodes and nodes to be visited
 	set<int> visited;
 	queue<int> actors;
@@ -178,54 +206,27 @@ bool Graph::BFS(int first, int second) {
 }
 
 vector<int> Graph::DijkstrasAlgorithm(int source) {
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    vector<int> distances(size, INT_MAX);
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	vector<int> distances(size, INT_MAX);
 
-    pq.push(make_pair(0, source));
-    distances[source] = 0;
-    
-    while (!pq.empty()) {
-        auto curr = pq.top();
-        pq.pop();
-        
-        int u = curr.second;
-        auto tempVect = GetNeighbors(u);
+	pq.push(make_pair(0, source));
+	distances[source] = 0;
 
-        for (int i = 0; i < tempVect.size(); i++) {
-            int v = tempVect[i].first;
-            int w = tempVect[i].second;
-            if (distances[v] > distances[u] + w) {
-                distances[v] = distances[u] + w;
-                pq.push(make_pair(distances[v], v));
-            }
-        }
-    }
-    return distances;
-}
+	while (!pq.empty()) {
+		auto curr = pq.top();
+		pq.pop();
 
-vector<int> Graph::BellmanFord(int source) {
-	bool change = true; 
-	vector<int> d(adjList.size(), INT_MAX);
-	vector<int> p(adjList.size(), source);
+		int u = curr.second;
+		auto tempVect = GetNeighbors(u);
 
-	d[source] = 0;
-
-	while (change) {
-		change = false;
-
-		for (int i = 0; i < d.size(); i++) {
-			//for (int k = 0; i < )
-			if (d[i] != INT_MAX) {
-				for (int j = 0; j < adjList[i].size(); j++) {
-					if (d[i] + adjList[i][j].second < d[j]) {
-						d[j] = d[i] + adjList[i][j].second;
-						p[j] = i;
-						change = true;
-					}
-				}
+		for (int i = 0; i < tempVect.size(); i++) {
+			int v = tempVect[i].first;
+			int w = tempVect[i].second;
+			if (distances[v] > distances[u] + w) {
+				distances[v] = distances[u] + w;
+				pq.push(make_pair(distances[v], v));
 			}
 		}
 	}
-
-	return d; 
+	return distances;
 }
