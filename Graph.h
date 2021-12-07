@@ -31,5 +31,6 @@ public:
 
 	//graph algorithms
 	bool DFS(int first, int second); 
+	vector<int> BellmanFord(int source);
 };
 
