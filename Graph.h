@@ -34,6 +34,6 @@ public:
 	bool DFS(int first, int second); 
 	bool BFS(int first, int second); 
 	vector<int> DijkstrasAlgorithm(int source); 
-	vector<int> BellmanFord(int source);
+	vector<int> bellman_Ford(int source);
+	vector<int> bellman_Ford_Helper(const string& srcName, const string& toName); // Calls Bellman Ford Algorithm and Outputs
 };
-
