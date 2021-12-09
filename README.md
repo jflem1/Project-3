@@ -13,5 +13,5 @@ If you would like to run the CelebriGator program, MAKE SURE YOU:
   
 Thank you for an intriguing and educational semester!<br />
 
-Thanks, 
+Thanks,<br /> 
 Aman's A-Listers
